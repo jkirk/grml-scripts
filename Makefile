@@ -22,7 +22,8 @@ pythoncheck: ## Run pythoncheck (flakecheck, isortcheck + blackcheck)
 	@RETURN=0
 	@for pythonfile in usr_bin/* usr_sbin/* usr_share/*; do
 	@	if head -1 "$${pythonfile}" | grep -q "python"; then
-	@		flake8 "$${pythonfile}" || RETURN=1
+	@		[ "$${pythonfile}" = "usr_bin/osd_server.py" ] && continue
+	@		flake8 --max-line-length 88 "$${pythonfile}" || RETURN=1
 	@		isort --check "$${pythonfile}" || RETURN=1
 	@		black --check "$${pythonfile}" || RETURN=1
 	@	fi
